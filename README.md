@@ -3,6 +3,7 @@
 ![image alt](https://github.com/Niwun-githup/Wi-Fi-Manager/blob/30f17431f8b010576d578b6b9f6120ba4375ae9f/PIC1.JPG)
 ![image alt](https://github.com/Niwun-githup/Wi-Fi-Manager/blob/ad471059a458d5205c20d0ef719a4449fa4d07c6/PIC2.JPG)
 Installation steps
+---
 copy code WiFiManager.h paste in arduino ide then upload the file into esp32c6
 1. Check Wi-Fi and AutoConnectAP will appear. Click to enter AutoConnectAP.
 2. Click on Configure Wifi.
