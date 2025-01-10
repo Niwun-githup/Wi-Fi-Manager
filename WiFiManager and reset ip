@@ -1,0 +1,44 @@
+#include <WiFi.h>
+#include <WiFiManager.h> // WiFiManager สำหรับจัดการ Wi-Fi
+
+// กำหนดพินสำหรับปุ่มรีเซ็ต Wi-Fi
+#define WIFI_RESET_PIN 0 // ใช้ GPIO0 สำหรับปุ่มรีเซ็ต Wi-Fi
+
+void setup() {
+  // เริ่มต้น Serial สำหรับการดีบัก
+  Serial.begin(115200);
+  delay(1000);
+  Serial.println("Starting...");
+
+  // ตั้งค่า WIFI_RESET_PIN
+  pinMode(WIFI_RESET_PIN, INPUT_PULLUP);
+
+  // สร้างออบเจ็กต์ WiFiManager
+  WiFiManager wm;
+
+  // ตรวจสอบว่าปุ่มรีเซ็ต Wi-Fi ถูกกดหรือไม่
+  if (digitalRead(WIFI_RESET_PIN) == LOW) {
+    Serial.println("Wi-Fi reset button pressed. Resetting WiFi settings...");
+    wm.resetSettings(); // รีเซ็ตการตั้งค่า Wi-Fi
+    delay(1000); // รอให้การรีเซ็ตเสร็จสมบูรณ์
+  }
+
+  // พยายามเชื่อมต่อ Wi-Fi โดยอัตโนมัติ
+  if (!wm.autoConnect("XIAO_ESP32C6_AP")) { // ชื่อ Access Point
+    Serial.println("Failed to connect to WiFi. Starting AP mode...");
+    wm.startConfigPortal("XIAO_ESP32C6_AP"); // เริ่มโหมด AP
+  }
+
+  // เมื่อเชื่อมต่อ Wi-Fi สำเร็จ
+  Serial.println("WiFi connected!");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {
+  // ตรวจสอบสถานะการเชื่อมต่อ Wi-Fi
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi not connected, attempting to reconnect...");
+  }
+  delay(1000); // เพิ่ม delay เพื่อไม่ให้โหลดเกินไป
+}
